@@ -430,7 +430,8 @@ PRODUCT_PACKAGES += \
     fstab.qcom \
     init.oem.fingerprint.sh \
     init.oem.fingerprint2.sh \
-    init.mmi.overlay.rc
+    init.mmi.overlay.rc \
+    init.recovery.touch.rc
 
 # Ramdisk
 PRODUCT_COPY_FILES += \
