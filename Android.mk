@@ -6,7 +6,7 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifneq ($(filter borneo capri caprip devon guamp hawao rhode, $(TARGET_DEVICE)),)
+ifeq ($(TARGET_DEVICE),guamp)
 include $(call all-makefiles-under, $(LOCAL_PATH))
 
 include $(CLEAR_VARS)

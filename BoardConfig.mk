@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-COMMON_PATH := device/motorola/sm6225-common
+DEVICE_PATH := device/motorola/guamp
 
 BUILD_BROKEN_DUP_RULES := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
@@ -38,17 +38,19 @@ BOARD_USES_ALSA_AUDIO := true
 
 # Bootloader
 TARGET_NO_BOOTLOADER := true
+TARGET_BOOTLOADER_BOARD_NAME := guamp
 
 # Display
 TARGET_USES_DISPLAY_RENDER_INTENTS := true
 TARGET_USES_GRALLOC4 := true
 TARGET_USES_HWC2 := true
 TARGET_USES_ION := true
+TARGET_SCREEN_DENSITY := 280
 
 # Filesystem
 TARGET_FS_CONFIG_GEN := \
-    $(COMMON_PATH)/config.fs \
-    $(COMMON_PATH)/mot_aids.fs
+    $(DEVICE_PATH)/config.fs \
+    $(DEVICE_PATH)/mot_aids.fs
 
 # FM
 BOARD_HAVE_QCOM_FM := true
@@ -59,18 +61,35 @@ LOC_HIDL_VERSION := 4.0
 
 # HIDL
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
-    $(COMMON_PATH)/framework_compatibility_matrix.xml \
+    $(DEVICE_PATH)/framework_compatibility_matrix.xml \
     hardware/qcom-caf/common/vendor_framework_compatibility_matrix.xml \
     vendor/lineage/config/device_framework_matrix.xml
-DEVICE_MANIFEST_FILE := $(COMMON_PATH)/manifest.xml
-DEVICE_MATRIX_FILE := $(COMMON_PATH)/compatibility_matrix.xml
-ODM_MANIFEST_FILES := $(COMMON_PATH)/manifest-qva.xml
+DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/manifest.xml
+DEVICE_MATRIX_FILE := $(DEVICE_PATH)/compatibility_matrix.xml
+ODM_MANIFEST_FILES := $(DEVICE_PATH)/manifest-qva.xml
+ODM_MANIFEST_SKUS += b c d dc dn dnc fb fc fd fdc fdn fdnc fn fnc n nc
+ODM_MANIFEST_B_FILES := $(DEVICE_PATH)/sku/manifest_b.xml
+ODM_MANIFEST_C_FILES := $(DEVICE_PATH)/sku/manifest_c.xml
+ODM_MANIFEST_D_FILES := $(DEVICE_PATH)/sku/manifest_d.xml
+ODM_MANIFEST_DC_FILES := $(DEVICE_PATH)/sku/manifest_dc.xml
+ODM_MANIFEST_DN_FILES := $(DEVICE_PATH)/sku/manifest_dn.xml
+ODM_MANIFEST_DNC_FILES := $(DEVICE_PATH)/sku/manifest_dnc.xml
+ODM_MANIFEST_FB_FILES := $(DEVICE_PATH)/sku/manifest_fb.xml
+ODM_MANIFEST_FC_FILES := $(DEVICE_PATH)/sku/manifest_fc.xml
+ODM_MANIFEST_FD_FILES := $(DEVICE_PATH)/sku/manifest_fd.xml
+ODM_MANIFEST_FDC_FILES := $(DEVICE_PATH)/sku/manifest_fdc.xml
+ODM_MANIFEST_FDN_FILES := $(DEVICE_PATH)/sku/manifest_fdn.xml
+ODM_MANIFEST_FDNC_FILES := $(DEVICE_PATH)/sku/manifest_fdnc.xml
+ODM_MANIFEST_FN_FILES := $(DEVICE_PATH)/sku/manifest_fn.xml
+ODM_MANIFEST_FNC_FILES := $(DEVICE_PATH)/sku/manifest_fnc.xml
+ODM_MANIFEST_N_FILES := $(DEVICE_PATH)/sku/manifest_n.xml
+ODM_MANIFEST_NC_FILES := $(DEVICE_PATH)/sku/manifest_nc.xml
 
 # Init
-TARGET_INIT_VENDOR_LIB := //$(COMMON_PATH):libinit_sm6225
+TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_sm6225
 
 # Kernel
-BOARD_BOOT_HEADER_VERSION ?= 3
+BOARD_BOOT_HEADER_VERSION := 2
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_CMDLINE := \
@@ -88,8 +107,12 @@ BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_KERNEL_SEPARATED_DTBO := true
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
-TARGET_KERNEL_CONFIG := vendor/bengal-perf_defconfig vendor/debugfs.config vendor/ext_config/moto-bengal.config
-TARGET_KERNEL_SOURCE := kernel/motorola/sm6225
+TARGET_KERNEL_CONFIG := \
+    vendor/bengal-perf_defconfig \
+    vendor/debugfs.config \
+    vendor/ext_config/moto-bengal.config \
+    vendor/ext_config/guamp-default.config
+TARGET_KERNEL_SOURCE := kernel/motorola/guamp
 
 # Kernel Modules - Audio
 TARGET_MODULE_ALIASES += \
@@ -131,13 +154,14 @@ BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
 BOARD_USES_METADATA_PARTITION := true
 
 BOARD_BOOTIMAGE_PARTITION_SIZE := 100663296
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 102400000
 BOARD_DTBOIMG_PARTITION_SIZE := 25165824
-BOARD_USERDATAIMAGE_PARTITION_SIZE ?= 118235312128
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 50616843776
 
-BOARD_SUPER_PARTITION_SIZE ?= 7583301632
+BOARD_SUPER_PARTITION_SIZE := 9763291136
 BOARD_SUPER_PARTITION_GROUPS := moto_dynamic_partitions
 BOARD_MOTO_DYNAMIC_PARTITIONS_PARTITION_LIST := system system_ext product vendor
-BOARD_MOTO_DYNAMIC_PARTITIONS_SIZE ?= 7579107328 # BOARD_SUPER_PARTITION_SIZE - 4MB
+BOARD_MOTO_DYNAMIC_PARTITIONS_SIZE := 4877451264 # BOARD_SUPER_PARTITION_SIZE - 4MB
 
 ifneq ($(WITH_GMS),true)
 BOARD_PRODUCTIMAGE_EXTFS_INODE_COUNT := -1
@@ -174,10 +198,10 @@ TARGET_BOARD_PLATFORM := bengal
 TARGET_USES_INTERACTION_BOOST := true
 
 # Properties
-TARGET_ODM_PROP += $(COMMON_PATH)/odm.prop
-TARGET_PRODUCT_PROP += $(COMMON_PATH)/product.prop
-TARGET_SYSTEM_EXT_PROP += $(COMMON_PATH)/system_ext.prop
-TARGET_VENDOR_PROP += $(COMMON_PATH)/vendor.prop
+TARGET_ODM_PROP += $(DEVICE_PATH)/odm.prop
+TARGET_PRODUCT_PROP += $(DEVICE_PATH)/product.prop
+TARGET_SYSTEM_EXT_PROP += $(DEVICE_PATH)/system_ext.prop
+TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 
 # RIL
 ENABLE_VENDOR_RIL_SERVICE := true
@@ -185,15 +209,26 @@ ENABLE_VENDOR_RIL_SERVICE := true
 # Recovery
 BOARD_INCLUDE_RECOVERY_DTBO := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
+TARGET_RECOVERY_DENSITY := hdpi
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.qcom
+TARGET_RECOVERY_UI_MARGIN_HEIGHT := 43
 
 # Sepolicy
 include device/qcom/sepolicy_vndr-legacy-um/SEPolicy.mk
-BOARD_VENDOR_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/vendor
-PRODUCT_PRIVATE_SEPOLICY_DIRS += $(COMMON_PATH)/sepolicy/private
+BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
+PRODUCT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
+
+# Security patch level
+VENDOR_SECURITY_PATCH := 2022-09-01
 
 # Verified Boot
 BOARD_AVB_ENABLE := true
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
+BOARD_AVB_VBMETA_SYSTEM := system
+BOARD_AVB_VBMETA_SYSTEM_KEY_PATH ?= external/avb/test/data/testkey_rsa2048.pem
+BOARD_AVB_VBMETA_SYSTEM_ALGORITHM ?= SHA256_RSA2048
+BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
+BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 1
 
 # WiFi
 BOARD_WLAN_DEVICE := qcwcn
@@ -212,3 +247,4 @@ WPA_SUPPLICANT_VERSION := VER_0_8_X
 
 # Inherit from the proprietary version
 include vendor/motorola/sm6225-common/BoardConfigVendor.mk
+include vendor/motorola/guamp/BoardConfigVendor.mk

@@ -28,24 +28,22 @@ setup_vendor "${DEVICE_COMMON}" "${VENDOR}" "${ANDROID_ROOT}" true
 write_headers "borneo capri caprip devon guamp hawao rhode"
 
 # The standard common blobs
-write_makefiles "${MY_DIR}/proprietary-files.txt" true
+write_makefiles "${MY_DIR}/proprietary-files-qc.txt" true
 
 # Finish
 write_footers
 
-if [ -s "${MY_DIR}/../${DEVICE}/proprietary-files.txt" ]; then
-    # Reinitialize the helper for device
-    setup_vendor "${DEVICE}" "${VENDOR}" "${ANDROID_ROOT}" false
+# Reinitialize the helper for device
+setup_vendor "${DEVICE}" "${VENDOR}" "${ANDROID_ROOT}" false
 
-    # Warning headers and guards
-    write_headers
+# Warning headers and guards
+write_headers
 
-    # The standard device blobs
-    write_makefiles "${MY_DIR}/../${DEVICE}/proprietary-files.txt" true
+# The standard device blobs
+write_makefiles "${MY_DIR}/proprietary-files.txt" true
 
-    write_rro_package "CarrierConfigOverlay" "com.android.carrierconfig" product
-    write_single_product_packages "CarrierConfigOverlay"
+write_rro_package "CarrierConfigOverlay" "com.android.carrierconfig" product
+write_single_product_packages "CarrierConfigOverlay"
 
-    # Finish
-    write_footers
-fi
+# Finish
+write_footers
