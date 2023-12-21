@@ -521,5 +521,4 @@ PRODUCT_BOOT_JARS += \
     WfdCommon
 
 # Get non-open-source specific aspects
-$(call inherit-product, vendor/motorola/sm6225-common/sm6225-common-vendor.mk)
-$(call inherit-product-if-exists, vendor/motorola/guamp/guamp-vendor.mk)
+$(call inherit-product, vendor/motorola/guamp/guamp-vendor.mk)

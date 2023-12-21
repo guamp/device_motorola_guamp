@@ -8,6 +8,10 @@
 
 set -e
 
+export DEVICE=guamp
+export DEVICE_COMMON=sm6225-common
+export VENDOR=motorola
+
 # Load extract_utils and do some sanity checks
 MY_DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "${MY_DIR}" ]]; then MY_DIR="${PWD}"; fi
@@ -21,25 +25,14 @@ if [ ! -f "${HELPER}" ]; then
 fi
 source "${HELPER}"
 
-# Initialize the helper for common
-setup_vendor "${DEVICE_COMMON}" "${VENDOR}" "${ANDROID_ROOT}" true
-
-# Warning headers and guards
-write_headers "borneo capri caprip devon guamp hawao rhode"
-
-# The standard common blobs
-write_makefiles "${MY_DIR}/proprietary-files-qc.txt" true
-
-# Finish
-write_footers
-
-# Reinitialize the helper for device
+# Initialize the helper
 setup_vendor "${DEVICE}" "${VENDOR}" "${ANDROID_ROOT}" false
 
 # Warning headers and guards
 write_headers
 
 # The standard device blobs
+write_makefiles "${MY_DIR}/proprietary-files-qc.txt" true
 write_makefiles "${MY_DIR}/proprietary-files.txt" true
 
 write_rro_package "CarrierConfigOverlay" "com.android.carrierconfig" product
